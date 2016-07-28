@@ -7,11 +7,12 @@ Feedlyのフォロー（購読）対象として同期します。
 Setup
 ==================================================
 
+```bash
+$ pip install -r requirements.txt
+```
+
 - [Python Wrapper for Qiita API v2](https://github.com/petitviolet/qiita_py)
 
-```bash
-$ pip install qiita_v2
-```
 
 Usage
 ==================================================

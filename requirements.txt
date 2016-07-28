@@ -1,0 +1,2 @@
+# $ pip install -r requirements.txt
+qiita-v2==0.1.0
