@@ -177,10 +177,9 @@ if __name__ == '__main__':
     feedly_token = args.feedly_token
 
     # Qiita
-    qiita_user_id = qiita.get_user_id(qiita_token)
-    qiita_tag_feed_urls = qiita.get_following_tag_feed_urls(
-        qiita_token,
-        qiita_user_id)
+    qiita_client = qiita.MyQiitaClient(qiita_token)
+    qiita_user_id = qiita_client.get_user_id()
+    qiita_tag_feed_urls = qiita_client.get_following_tag_feed_urls(qiita_user_id)
     qiita_feed_ids = [feedly.to_feed_id(x) for x in qiita_tag_feed_urls]
 
     # Feedly
