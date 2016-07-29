@@ -43,14 +43,14 @@ def _query_yes_no(question, default=None):
             print("Please respond with 'y' or 'n'.")
 
 
-def arg_parser():
+def _arg_parser():
     parser = argparse.ArgumentParser(description='qiidly: Qiita to Feedly.')
     parser.add_argument('-q', '--qiita-token',
                         required=True,
-                        help='Qiita access token (https://qiita.com/settings/applications)')
+                        help='Qiita access token')
     parser.add_argument('-f', '--feedly-token',
                         required=True,
-                        help='Feedly developer access token (https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token)')
+                        help='Feedly developer access token')
     return parser
 
 
@@ -129,22 +129,36 @@ def _create_todo(qiita_feed_ids, subscriptions):
 
 
 def _up_to_date(todo):
-    return len(todo['subscribe_ids']) == 0 and len(todo['add_categories']) == 0 and len(todo['remove_categories']) == 0 and len(todo['unsubscribe_ids']) == 0
+    return not (todo['subscribe_ids'] or
+                todo['add_categories'] or
+                todo['remove_categories'] or
+                todo['unsubscribe_ids'])
 
 
 def _print_todo(todo):
-    print('Feedlyに対して…')
-    print('================')
-    print('## 新規購読追加するもの：')
-    print(todo['subscribe_ids'])
-    print('## 購読を削除するもの：')
-    print(todo['unsubscribe_ids'])
-    print("## 登録済みの購読にカテゴリ'{category}を追加するもの".format(category=qiidly_category_id))
+    print('Sync Feedly with Qiita:')
+    print('=======================')
+
+    print()
+    print('## feed-IDs to subscribe newly:')
+    if todo['subscribe_ids']:
+        print(todo['subscribe_ids'])
+
+    print()
+    print('## feed-IDs to unsubscribe:')
+    if todo['unsubscribe_ids']:
+        print(todo['unsubscribe_ids'])
+
+    print()
+    print("## subscriptions to add category '{category}':".format(category=FEEDLY_CATEGORY))
     for x in todo['add_categories']:
         print(x)
-    print("## 登録済みの購読からカテゴリ'{category}を削除するもの".format(category=qiidly_category_id))
+
+    print()
+    print("## subscriptions to remove category '{category}':".format(category=FEEDLY_CATEGORY))
     for x in todo['remove_categories']:
         print(x)
+
 
 def _sync_to_feedly(feedly_token, qiidly_category_id, todo):
     for f in todo['subscribe_ids']:
@@ -157,7 +171,7 @@ def _sync_to_feedly(feedly_token, qiidly_category_id, todo):
 
 
 if __name__ == '__main__':
-    args = arg_parser().parse_args()
+    args = _arg_parser().parse_args()
 
     qiita_token = args.qiita_token
     feedly_token = args.feedly_token
@@ -186,9 +200,9 @@ if __name__ == '__main__':
 
     # sync to Feedly
     print('')
-    if not _query_yes_no('Feedlyに反映していいですか？', default=None):
-        print('じゃ、反映やめとくね。')
+    if not _query_yes_no('Sync Feedly with your Qiita?', default=None):
+        print('Did nothing.')
         exit(0)
 
     _sync_to_feedly(feedly_token, qiidly_category_id, todo)
-    print('反映完了！')
+    print('Done!')

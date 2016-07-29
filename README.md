@@ -27,13 +27,16 @@ optional arguments:
   -h, --help            show this help message and exit
   -q QIITA_TOKEN, --qiita-token QIITA_TOKEN
                         Qiita access token
-                        (https://qiita.com/settings/applications)
   -f FEEDLY_TOKEN, --feedly-token FEEDLY_TOKEN
                         Feedly developer access token
-                        (https://developer.feedly.com/v3/developer/#how-do-i-
-                        generate-a-developer-access-token)
 $
 ```
+
+Qiita access token
+- https://qiita.com/settings/applications
+
+Feedly developer access token
+- https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token
 
 
 License
