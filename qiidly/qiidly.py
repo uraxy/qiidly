@@ -160,14 +160,14 @@ def _print_todo(todo):
         print(x)
 
 
-def _sync_to_feedly(feedly_token, qiidly_category_id, todo):
+def _sync_to_feedly(feedly_client, qiidly_category_id, todo):
     for f in todo['subscribe_ids']:
-        feedly.subscribe_feed(feedly_token, f, qiidly_category_id)
+        feedly_client.subscribe_feed(f, qiidly_category_id)
     if len(todo['unsubscribe_ids']) > 0:
-        feedly.unsubscribe_feeds(feedly_token, todo['unsubscribe_ids'])
+        feedly_client.unsubscribe_feeds(todo['unsubscribe_ids'])
     to_update = todo['add_categories'] + todo['remove_categories']
     if len(to_update) > 0:
-        feedly.update_feeds(feedly_token, to_update)
+        feedly_client.update_feeds(to_update)
 
 
 if __name__ == '__main__':
@@ -184,12 +184,13 @@ if __name__ == '__main__':
     qiita_feed_ids = [feedly.to_feed_id(x) for x in qiita_tag_feed_urls]
 
     # Feedly
-    feedly_user_profile = feedly.get_user_profile(feedly_token)
+    feedly_client = feedly.FeedlyClient(feedly_token)
+    feedly_user_profile = feedly_client.get_user_profile()
 
     feedly_user_id = feedly_user_profile['id']
     qiidly_category_id = feedly.to_category_id(feedly_user_id, FEEDLY_CATEGORY)
 
-    subscriptions = feedly.get_user_subscriptions(feedly_token)
+    subscriptions = feedly_client.get_user_subscriptions()
 
     # todo check
     todo = _create_todo(qiita_feed_ids, subscriptions)
@@ -204,5 +205,5 @@ if __name__ == '__main__':
         print('Did nothing.')
         exit(0)
 
-    _sync_to_feedly(feedly_token, qiidly_category_id, todo)
+    _sync_to_feedly(feedly_client, qiidly_category_id, todo)
     print('Done!')
