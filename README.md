@@ -1,8 +1,9 @@
 qiidly
 ==================================================
 
-Qiitaでフォロー中のタグのフィードを、
-Feedlyのフォロー（購読）対象として同期します。
+Sync Feedly subscriptions (category 'Qiita:tags')
+with following tags at Qiita.com.
+
 
 Setup
 ==================================================
