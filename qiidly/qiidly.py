@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """dummy docstring."""
-import my_qiita
-import my_feedly
 import copy
 import argparse
+import qiita
+import feedly
 
 
 # $ python qiidly/qiidly.py -q $QIITA_TOKEN -f $FEEDLY_TOKEN
@@ -162,12 +162,12 @@ def _print_todo(todo):
 
 def _sync_to_feedly(feedly_token, qiidly_category_id, todo):
     for f in todo['subscribe_ids']:
-        my_feedly.subscribe_feed(feedly_token, f, qiidly_category_id)
+        feedly.subscribe_feed(feedly_token, f, qiidly_category_id)
     if len(todo['unsubscribe_ids']) > 0:
-        my_feedly.unsubscribe_feeds(feedly_token, todo['unsubscribe_ids'])
+        feedly.unsubscribe_feeds(feedly_token, todo['unsubscribe_ids'])
     to_update = todo['add_categories'] + todo['remove_categories']
     if len(to_update) > 0:
-        my_feedly.update_feeds(feedly_token, to_update)
+        feedly.update_feeds(feedly_token, to_update)
 
 
 if __name__ == '__main__':
@@ -177,24 +177,24 @@ if __name__ == '__main__':
     feedly_token = args.feedly_token
 
     # Qiita
-    qiita_user_id = my_qiita.get_user_id(qiita_token)
-    qiita_tag_feed_urls = my_qiita.get_following_tag_feed_urls(
+    qiita_user_id = qiita.get_user_id(qiita_token)
+    qiita_tag_feed_urls = qiita.get_following_tag_feed_urls(
         qiita_token,
         qiita_user_id)
-    qiita_feed_ids = [my_feedly.to_feed_id(x) for x in qiita_tag_feed_urls]
+    qiita_feed_ids = [feedly.to_feed_id(x) for x in qiita_tag_feed_urls]
 
     # Feedly
-    feedly_user_profile = my_feedly.get_user_profile(feedly_token)
+    feedly_user_profile = feedly.get_user_profile(feedly_token)
 
     feedly_user_id = feedly_user_profile['id']
-    qiidly_category_id = my_feedly.to_category_id(feedly_user_id, FEEDLY_CATEGORY)
+    qiidly_category_id = feedly.to_category_id(feedly_user_id, FEEDLY_CATEGORY)
 
-    subscriptions = my_feedly.get_user_subscriptions(feedly_token)
+    subscriptions = feedly.get_user_subscriptions(feedly_token)
 
     # todo check
     todo = _create_todo(qiita_feed_ids, subscriptions)
     if _up_to_date(todo):
-        print('Already up-to-date. Nothing to do.')
+        print('Already up-to-date.')
         exit(0)
     _print_todo(todo)
 
