@@ -2,7 +2,7 @@
 from qiita_v2.client import QiitaClient
 
 
-def to_tag_feed_url(tag):
+def _to_tag_feed_url(tag):
     return 'http://qiita.com/tags/{tag}/feed.atom'.format(tag=tag['id'])
 
 
@@ -37,8 +37,7 @@ class MyQiitaClient:
         return user_id
 
     def get_following_tag_feed_urls(self, user_id):
-        # user_id = get_user_id(access_token)
         tags = self.get_following_tags(user_id)
-        tag_feed_urls = [to_tag_feed_url(tag) for tag in tags]
+        tag_feed_urls = [_to_tag_feed_url(tag) for tag in tags]
 
         return tag_feed_urls
