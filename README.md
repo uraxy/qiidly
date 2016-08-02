@@ -33,11 +33,33 @@ optional arguments:
 $
 ```
 
+```bash
+$ python qiidly.py -q $QIITA_TOKEN -f $FEEDLY_TOKEN
+Already up-to-date.
+$
+```
+
+or
+
+```bash
+$ ./qiidly.sh
+Already up-to-date.
+$
+```
+
 Qiita access token
 - https://qiita.com/settings/applications
 
 Feedly developer access token
 - https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token
+
+
+tests
+==================================================
+
+```bash
+$ python -m unittest discover tests
+```
 
 
 License

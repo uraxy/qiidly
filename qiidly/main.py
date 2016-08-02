@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """dummy docstring."""
 import copy
-import argparse
-import qiita
-import feedly
+from . import qiita
+from . import feedly
 
 
 # $ python qiidly/qiidly.py -q $QIITA_TOKEN -f $FEEDLY_TOKEN
@@ -43,18 +42,7 @@ def _query_yes_no(question, default=None):
             print("Please respond with 'y' or 'n'.")
 
 
-def _arg_parser():
-    parser = argparse.ArgumentParser(description='qiidly: Qiita to Feedly.')
-    parser.add_argument('-q', '--qiita-token',
-                        required=True,
-                        help='Qiita access token')
-    parser.add_argument('-f', '--feedly-token',
-                        required=True,
-                        help='Feedly developer access token')
-    return parser
-
-
-def _create_todo(qiita_feed_ids, subscriptions):
+def _create_todo(qiidly_category_id, qiita_feed_ids, subscriptions):
     # 1. Qiitaでfollowしているものについて
     # 1-1. Feedlyで購読あり
     #      -> FEEDLY_CATEGORYがなければ、カテゴリに追加し更新対象へ
@@ -170,12 +158,7 @@ def _sync_to_feedly(feedly_client, qiidly_category_id, todo):
         feedly_client.update_feeds(to_update)
 
 
-if __name__ == '__main__':
-    args = _arg_parser().parse_args()
-
-    qiita_token = args.qiita_token
-    feedly_token = args.feedly_token
-
+def sync(qiita_token, feedly_token):
     # Qiita
     qiita_client = qiita.MyQiitaClient(qiita_token)
     qiita_user_id = qiita_client.get_user_id()
@@ -192,7 +175,7 @@ if __name__ == '__main__':
     subscriptions = feedly_client.get_user_subscriptions()
 
     # todo check
-    todo = _create_todo(qiita_feed_ids, subscriptions)
+    todo = _create_todo(qiidly_category_id, qiita_feed_ids, subscriptions)
     if _up_to_date(todo):
         print('Already up-to-date.')
         exit(0)
