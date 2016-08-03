@@ -39,7 +39,8 @@ def _query_yes_no(question, default=None):
             print("Please respond with 'y' or 'n'.")
 
 
-if __name__ == '__main__':
+def main():
+    """dummy."""
     args = _arg_parser().parse_args()
     q = Qiidly(args.qiita_token, args.feedly_token)
 
@@ -54,3 +55,21 @@ if __name__ == '__main__':
         exit(0)
     q.sync()
     print('Done!')
+
+
+if __name__ == '__main__':
+    main()
+    # args = _arg_parser().parse_args()
+    # q = Qiidly(args.qiita_token, args.feedly_token)
+    #
+    # if q.up_to_date():
+    #     print('Already up-to-date.')
+    #     exit(0)
+    # q.print_todo()
+    # # sync to Feedly
+    # print('')
+    # if not _query_yes_no('Sync Feedly with your Qiita?', default=None):
+    #     print('Did nothing.')
+    #     exit(0)
+    # q.sync()
+    # print('Done!')

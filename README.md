@@ -19,8 +19,8 @@ Usage
 ==================================================
 
 ```bash
-$ python qiidly/qiidly.py -h
-usage: qiidly.py [-h] -q QIITA_TOKEN -f FEEDLY_TOKEN
+$ python -m qiidly.command_line -h
+usage: command_line.py [-h] -q QIITA_TOKEN -f FEEDLY_TOKEN
 
 qiidly: Qiita to Feedly.
 
@@ -34,7 +34,7 @@ $
 ```
 
 ```bash
-$ python qiidly.py -q $QIITA_TOKEN -f $FEEDLY_TOKEN
+$ python -m qiidly.command_line -q $QIITA_TOKEN -f $FEEDLY_TOKEN
 Already up-to-date.
 $
 ```
