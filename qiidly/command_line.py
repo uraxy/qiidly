@@ -5,7 +5,7 @@ from qiidly.main import Qiidly
 
 
 def _arg_parser():
-    parser = argparse.ArgumentParser(description='qiidly: Qiita to Feedly.')
+    parser = argparse.ArgumentParser(description='qiidly: Sync following tag feeds at Qiita to Feedly.')
     parser.add_argument('-q', '--qiita-token',
                         required=True,
                         help='Qiita access token')
@@ -59,17 +59,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # args = _arg_parser().parse_args()
-    # q = Qiidly(args.qiita_token, args.feedly_token)
-    #
-    # if q.up_to_date():
-    #     print('Already up-to-date.')
-    #     exit(0)
-    # q.print_todo()
-    # # sync to Feedly
-    # print('')
-    # if not _query_yes_no('Sync Feedly with your Qiita?', default=None):
-    #     print('Did nothing.')
-    #     exit(0)
-    # q.sync()
-    # print('Done!')
