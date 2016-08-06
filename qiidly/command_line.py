@@ -50,7 +50,7 @@ def main():
     q.print_todo()
     # sync to Feedly
     print('')
-    if not _query_yes_no('Sync Feedly with your Qiita?', default=None):
+    if not _query_yes_no('Sync following tag feeds at Qiita to Feedly?', default=None):
         print('Did nothing.')
         exit(0)
     q.sync()

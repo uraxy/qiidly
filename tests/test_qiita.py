@@ -20,13 +20,14 @@ class TestQiita(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test__to_tag_feed_url(self):
-        tag = {
-            "followers_count": 60,
-            "icon_url": "https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/247db9e46df769906ad1093d71f994ad3f06617f/medium.jpg?1388309710",
-            "id": "OpenCL",
-            "items_count": 45
-          }
+    def test_tag_feed_url_from_tag_id(self):
+        tag_id = 'OpenCL'
         expected = 'http://qiita.com/tags/OpenCL/feed.atom'
-        actual = qiidly.qiita._to_tag_feed_url(tag)
+        actual = qiidly.qiita.tag_feed_url_from_tag_id(tag_id)
+        self.assertEqual(expected, actual)
+
+    def test_tag_id_from_tag_feed_url(self):
+        tag_feed_url = 'http://qiita.com/tags/python/feed.atom'
+        expected = 'python'
+        actual = qiidly.qiita.tag_id_from_tag_feed_url(tag_feed_url)
         self.assertEqual(expected, actual)

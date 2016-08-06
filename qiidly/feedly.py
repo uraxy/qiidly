@@ -1,18 +1,30 @@
 # -*- coding: utf-8 -*-
 import json
+import re
 import requests
 
 
-def to_feed_id(feed_url):
+def feed_id_from_feed_url(feed_url):
     """feed IDに変換します."""
     return 'feed/{url}'.format(url=feed_url)
 
 
-def to_category_id(user_id, category):
+def feed_url_from_feed_id(feed_id):
+    """feed URLに変換します。"""
+    x = re.match(r'feed/(.+)', feed_id)
+    return x.group(1) if x else None
+
+
+def category_id_from_user_id_and_category(user_id, category):
     """カテゴリIDに変換します."""
     return 'user/{user_id}/category/{category}'.format(
         user_id=user_id,
         category=category)
+
+
+def category_from_category_id(category_id):
+    x = re.match(r'^user/.*/category/(.+)$', category_id)
+    return x.group(1) if x else None
 
 
 class FeedlyClient:

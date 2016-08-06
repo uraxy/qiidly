@@ -3,7 +3,7 @@ import unittest
 import qiidly.main
 
 
-class TestQiidly(unittest.TestCase):
+class TestMain(unittest.TestCase):
     """Test for qiidly.main"""
 
     @classmethod
@@ -27,6 +27,12 @@ class TestQiidly(unittest.TestCase):
         pass
         # print()
         # print('>> tearDown method is called.')
+
+    def test_tag_feed_url_from_tag_id(self):
+        feed_id = 'feed/http://qiita.com/tags/OpenCL/feed.atom'
+        expected = 'OpenCL'
+        actual = qiidly.main.tag_id_from_feed_id(feed_id)
+        self.assertEqual(expected, actual)
 
     # def _create_todo(qiita_feed_ids, subscriptions):
     #

@@ -5,6 +5,15 @@ from . import qiita
 from . import feedly
 
 
+FEEDLY_CATEGORY = 'Qiita:tags'
+
+def tag_id_from_feed_id(feed_id):
+    """TODO"""
+    feed_url = feedly.feed_url_from_feed_id(feed_id)
+    tag_id = qiita.tag_id_from_tag_feed_url(feed_url)
+    return tag_id
+
+
 class Qiidly:
     """Qiidly."""
 
@@ -18,7 +27,6 @@ class Qiidly:
     # https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token
 
     # Feedlyで購読するときに付けるCategory
-    FEEDLY_CATEGORY = 'Qiita:tags'
 
     def __init__(self, qiita_token, feedly_token, feedly_category=FEEDLY_CATEGORY):
         """dummy.
@@ -37,7 +45,7 @@ class Qiidly:
         feedly_user_profile = self.feedly_client.get_user_profile()
         feedly_user_id = feedly_user_profile['id']
 
-        self.qiidly_category_id = feedly.to_category_id(feedly_user_id, self.feedly_category)
+        self.qiidly_category_id = feedly.category_id_from_user_id_and_category(feedly_user_id, self.feedly_category)
         self.qiita_feed_ids = self._get_qiita_feed_ids()
         self.feedly_subscriptions = self._get_feedly_subscriptions()
         self.todo = self._build_todo()
@@ -129,33 +137,32 @@ class Qiidly:
 
     def print_todo(self):
         """dummy."""
-        print('Sync Feedly with Qiita:')
-        print('=======================')
+        print("## Category at Qiita: '{}'".format(FEEDLY_CATEGORY))
+        # print('Sync Feedly with Qiita:')
+        # print('=======================')
 
-        print()
-        print('## feed-IDs to subscribe newly:')
-        if self.todo['subscribe_ids']:
-            print(self.todo['subscribe_ids'])
+        for x in self.todo['subscribe_ids']:
+            tag_id = tag_id_from_feed_id(x)
+            print('+ {}'.format(tag_id))
 
-        print()
-        print('## feed-IDs to unsubscribe:')
-        if self.todo['unsubscribe_ids']:
-            print(self.todo['unsubscribe_ids'])
+        for x in self.todo['unsubscribe_ids']:
+            tag_id = tag_id_from_feed_id(x)
+            print('- {}'.format(tag_id))
 
-        print()
-        print("## subscriptions to add category '{category}':".format(category=self.feedly_category))
         for x in self.todo['add_categories']:
-            print(x)
+            new_categs = [feedly.category_from_category_id(c['id']) for c in x['categories']]
+            print('+ {}\t=> categories{}'.format(tag_id_from_feed_id(x['id']),
+                                                 new_categs))
 
-        print()
-        print("## subscriptions to remove category '{category}':".format(category=self.feedly_category))
         for x in self.todo['remove_categories']:
-            print(x)
+            new_categs = [feedly.category_from_category_id(c['id']) for c in x['categories']]
+            print('- {}\t=> categories{}'.format(tag_id_from_feed_id(x['id']),
+                                                 new_categs))
 
     def _get_qiita_feed_ids(self):
         uid = self.qiita_client.get_user_id()
         urls = self.qiita_client.get_following_tag_feed_urls(uid)
-        qiita_feed_ids = [feedly.to_feed_id(x) for x in urls]
+        qiita_feed_ids = [feedly.feed_id_from_feed_url(x) for x in urls]
 
         return qiita_feed_ids
 

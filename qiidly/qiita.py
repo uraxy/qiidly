@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+import re
 from qiita_v2.client import QiitaClient
 
 
-def _to_tag_feed_url(tag):
-    return 'http://qiita.com/tags/{tag}/feed.atom'.format(tag=tag['id'])
+def tag_feed_url_from_tag_id(tag_id):
+    return 'http://qiita.com/tags/{tag}/feed.atom'.format(tag=tag_id)
 
+def tag_id_from_tag_feed_url(tag_feed_url):
+    x = re.match(r'http://qiita.com/tags/(.+)/feed.atom', tag_feed_url)
+    return x.group(1) if x else None
 
 class MyQiitaClient:
     """My Qiita Client"""
@@ -38,6 +42,6 @@ class MyQiitaClient:
 
     def get_following_tag_feed_urls(self, user_id):
         tags = self.get_following_tags(user_id)
-        tag_feed_urls = [_to_tag_feed_url(tag) for tag in tags]
+        tag_feed_urls = [tag_feed_url_from_tag_id(tag['id']) for tag in tags]
 
         return tag_feed_urls

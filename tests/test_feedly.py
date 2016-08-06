@@ -41,15 +41,27 @@ class TestFeedly(unittest.TestCase):
         # print()
         # print('>> tearDown method is called.')
 
-    def test_to_feed_id(self):
-        FEED_URL = 'https://example.com/feed'
+    def test_feed_id_from_feed_url(self):
+        feed_url = 'https://example.com/feed'
         expected = 'feed/https://example.com/feed'
-        actual = qiidly.feedly.to_feed_id(FEED_URL)
+        actual = qiidly.feedly.feed_id_from_feed_url(feed_url)
         self.assertEqual(expected, actual)
 
-    def test_to_category_id(self):
+    def test_feed_url_from_feed_id(self):
+        feed_id = 'feed/https://example.com/feed'
+        expected = 'https://example.com/feed'
+        actual = qiidly.feedly.feed_url_from_feed_id(feed_id)
+        self.assertEqual(expected, actual)
+
+    def test_category_id_from_user_id_and_category(self):
         USER_ID = 'UUU'
         CATEGORY = 'CCC'
         expected = 'user/UUU/category/CCC'
-        actual = qiidly.feedly.to_category_id(USER_ID, CATEGORY)
+        actual = qiidly.feedly.category_id_from_user_id_and_category(USER_ID, CATEGORY)
+        self.assertEqual(expected, actual)
+
+    def test_category_from_category_id(self):
+        cagegory_id = 'user/UUU/category/CCC'
+        expected = 'CCC'
+        actual = qiidly.feedly.category_from_category_id(cagegory_id)
         self.assertEqual(expected, actual)

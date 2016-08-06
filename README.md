@@ -1,8 +1,7 @@
 qiidly
 ==================================================
 
-Sync Feedly subscriptions (category 'Qiita:tags')
-with following tags at Qiita.com.
+Sync following tag feeds at Qiita to Feedly.
 
 
 Setup
@@ -44,6 +43,21 @@ or
 ```bash
 $ ./qiidly.sh
 Already up-to-date.
+$
+```
+
+or
+
+```bash
+$ ./qiidly.sh
+## Category at Qiita: 'Qiita:tags'
++ linebot
+- gwt
++ onsenui	=> categories['dummy', 'Qiita:tags']
+- Cytoscape	=> categories['dummy']
+
+Sync following tag feeds at Qiita to Feedly? [y/n] y
+Done!
 $
 ```
 
