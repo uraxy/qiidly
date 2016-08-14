@@ -28,7 +28,7 @@ class TestMain(unittest.TestCase):
         # print()
         # print('>> tearDown method is called.')
 
-    def test_tag_feed_url_from_tag_id(self):
+    def test_tag_id_from_feed_id(self):
         feed_id = 'feed/http://qiita.com/tags/OpenCL/feed.atom'
         expected = 'OpenCL'
         actual = qiidly.main.tag_id_from_feed_id(feed_id)
