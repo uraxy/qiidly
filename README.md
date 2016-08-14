@@ -1,17 +1,30 @@
 qiidly
 ==================================================
 
-Sync following tag feeds at Qiita to Feedly.
+Sync Qiita feeds of followees and following tags to Feedly.
 
 
 Setup
 ==================================================
 
-```bash
+Libraries
+----------------------------------------
+```sh
 $ pip install -r requirements.txt
 ```
 
-- [Python Wrapper for Qiita API v2](https://github.com/petitviolet/qiita_py)
+- [Python Wrapper for Qiita API v2](https://github.com/petitviolet/qiita_py) ([MIT License](https://petitviolet.mit-license.org/))
+
+
+API Access token
+----------------------------------------
+
+Qiita access token
+- https://qiita.com/settings/applications
+
+Feedly developer access token
+- https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token
+
 
 
 Usage
@@ -32,24 +45,8 @@ optional arguments:
 $
 ```
 
-```bash
-$ python -m qiidly.command_line -q $QIITA_TOKEN -f $FEEDLY_TOKEN
-Already up-to-date.
-$
-```
-
-or
-
-```bash
-$ ./qiidly.sh
-Already up-to-date.
-$
-```
-
-or
-
-```bash
-$ ./qiidly.sh
+```sh
+$ ./qiidly.sh  # == python -m qiidly.command_line -q $QIITA_TOKEN -f $FEEDLY_TOKEN
 ## Category at Qiita: 'Qiita:tags'
 + linebot
 - gwt
@@ -58,14 +55,13 @@ $ ./qiidly.sh
 
 Sync following tag feeds at Qiita to Feedly? [y/n] y
 Done!
+## Category at Qiita: 'Qiita:followees'
+- uraxy
+
+Sync to Feedly? [y/n] y
+Done!
 $
 ```
-
-Qiita access token
-- https://qiita.com/settings/applications
-
-Feedly developer access token
-- https://developer.feedly.com/v3/developer/#how-do-i-generate-a-developer-access-token
 
 
 tests
