@@ -31,3 +31,15 @@ class TestQiita(unittest.TestCase):
         expected = 'python'
         actual = qiidly.qiita.tag_id_from_tag_feed_url(tag_feed_url)
         self.assertEqual(expected, actual)
+
+    def test_user_feed_url_from_user_id(self):
+        user_id = 'uraxy'
+        expected = 'http://qiita.com/uraxy/feed.atom'
+        actual = qiidly.qiita.user_feed_url_from_user_id(user_id)
+        self.assertEqual(expected, actual)
+
+    def test_user_id_from_user_feed_url(self):
+        user_feed_url = 'http://qiita.com/uraxy/feed.atom'
+        expected = 'uraxy'
+        actual = qiidly.qiita.user_id_from_user_feed_url(user_feed_url)
+        self.assertEqual(expected, actual)

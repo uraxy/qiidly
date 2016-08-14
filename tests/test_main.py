@@ -34,6 +34,12 @@ class TestMain(unittest.TestCase):
         actual = qiidly.main.tag_id_from_feed_id(feed_id)
         self.assertEqual(expected, actual)
 
+    def test_user_id_from_feed_id(self):
+        feed_id = 'feed/http://qiita.com/uraxy/feed.atom'
+        expected = 'uraxy'
+        actual = qiidly.main.user_id_from_feed_id(feed_id)
+        self.assertEqual(expected, actual)
+
     # def _create_todo(qiita_feed_ids, subscriptions):
     #
     # 1. Qiitaでfollowしているものについて

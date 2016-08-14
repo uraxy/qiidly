@@ -5,13 +5,22 @@ from . import qiita
 from . import feedly
 
 
-FEEDLY_CATEGORY = 'Qiita:tags'
+FEEDLY_CATEGORY_TAGS = 'Qiita:tags'
+FEEDLY_CATEGORY_FOLLOWEES = 'Qiita:followees'
+
 
 def tag_id_from_feed_id(feed_id):
-    """TODO"""
+    """Feedlyのfeed_idからQiitaのtag_idを抽出します."""
     feed_url = feedly.feed_url_from_feed_id(feed_id)
     tag_id = qiita.tag_id_from_tag_feed_url(feed_url)
     return tag_id
+
+
+def user_id_from_feed_id(feed_id):
+    """Feedlyのfeed_idからQiitaのuser_idを抽出します."""
+    feed_url = feedly.feed_url_from_feed_id(feed_id)
+    user_id = qiita.user_id_from_user_feed_url(feed_url)
+    return user_id
 
 
 class Qiidly:
@@ -28,12 +37,20 @@ class Qiidly:
 
     # Feedlyで購読するときに付けるCategory
 
-    def __init__(self, qiita_token, feedly_token, feedly_category=FEEDLY_CATEGORY):
+    def __init__(self, qiita_token, feedly_token, target='tags'):
         """dummy.
 
         ネットワークアクセスなし
+        :param target: Syncする対象。'tags' or 'followees'
+        :type target: str
         """
-        self.feedly_category = feedly_category
+        self.target = target
+        if target == 'tags':
+            self.feedly_category = FEEDLY_CATEGORY_TAGS
+        elif target == 'followees':
+            self.feedly_category = FEEDLY_CATEGORY_FOLLOWEES
+        else:
+            raise ValueError("Invalid target. Must be one of ['tags', 'followees']: '{target}'".format(target=target))
 
         self.qiita_client = qiita.MyQiitaClient(qiita_token)
         self.feedly_client = feedly.FeedlyClient(feedly_token)
@@ -46,7 +63,14 @@ class Qiidly:
         feedly_user_id = feedly_user_profile['id']
 
         self.qiidly_category_id = feedly.category_id_from_user_id_and_category(feedly_user_id, self.feedly_category)
-        self.qiita_feed_ids = self._get_qiita_feed_ids()
+
+        if self.target == 'tags':
+            self.qiita_feed_ids = self._get_qiita_tag_feed_ids()
+        elif self.target == 'followees':
+            self.qiita_feed_ids = self._get_qiita_followee_feed_ids()
+        else:
+            self.qiita_feed_ids = None
+
         self.feedly_subscriptions = self._get_feedly_subscriptions()
         self.todo = self._build_todo()
 
@@ -126,42 +150,62 @@ class Qiidly:
 
         return todo
 
-    def up_to_date(self):
-        """QiitaとFeedlyがsync済みかどうかチェックします。"""
+    def have_to_sync(self):
+        """
+        QiitaとFeedlyがsync済みかどうかチェックします.
+
+        未チェックの場合は、ネットワークアクセスあり.
+        :returns: Syncする必要があるか？
+        :rtype: bool
+        """
         if not self.todo_checked:
             self._check_todo()
-        return not (self.todo['subscribe_ids'] or
-                    self.todo['add_categories'] or
-                    self.todo['remove_categories'] or
-                    self.todo['unsubscribe_ids'])
+        return (self.todo['subscribe_ids'] or
+                self.todo['add_categories'] or
+                self.todo['remove_categories'] or
+                self.todo['unsubscribe_ids'])
 
     def print_todo(self):
         """dummy."""
-        print("## Category at Qiita: '{}'".format(FEEDLY_CATEGORY))
-        # print('Sync Feedly with Qiita:')
-        # print('=======================')
+        if self.target == 'tags':
+            id_from_feed_id = tag_id_from_feed_id
+        elif self.target == 'followees':
+            id_from_feed_id = user_id_from_feed_id
+        else:
+            id_from_feed_id = None
+
+        print("## Category at Qiita: '{}'".format(self.feedly_category))
 
         for x in self.todo['subscribe_ids']:
-            tag_id = tag_id_from_feed_id(x)
-            print('+ {}'.format(tag_id))
+            qiita_id = id_from_feed_id(x)
+            print('+ {}'.format(qiita_id))
 
         for x in self.todo['unsubscribe_ids']:
-            tag_id = tag_id_from_feed_id(x)
-            print('- {}'.format(tag_id))
+            qiita_id = id_from_feed_id(x)
+            print('- {}'.format(qiita_id))
 
         for x in self.todo['add_categories']:
             new_categs = [feedly.category_from_category_id(c['id']) for c in x['categories']]
-            print('+ {}\t=> categories{}'.format(tag_id_from_feed_id(x['id']),
+            print('+ {}\t=> categories{}'.format(id_from_feed_id(x['id']),
                                                  new_categs))
 
         for x in self.todo['remove_categories']:
             new_categs = [feedly.category_from_category_id(c['id']) for c in x['categories']]
-            print('- {}\t=> categories{}'.format(tag_id_from_feed_id(x['id']),
+            print('- {}\t=> categories{}'.format(id_from_feed_id(x['id']),
                                                  new_categs))
 
-    def _get_qiita_feed_ids(self):
+    def _get_qiita_tag_feed_ids(self):
+        """Qiitaでフォローしているタグに対応するfeed_idのリストを返します."""
         uid = self.qiita_client.get_user_id()
         urls = self.qiita_client.get_following_tag_feed_urls(uid)
+        qiita_feed_ids = [feedly.feed_id_from_feed_url(x) for x in urls]
+
+        return qiita_feed_ids
+
+    def _get_qiita_followee_feed_ids(self):
+        """Qiitaでフォローしているユーザーに対応するfeed_idのリストを返します."""
+        uid = self.qiita_client.get_user_id()
+        urls = self.qiita_client.get_followees_feed_urls(uid)
         qiita_feed_ids = [feedly.feed_id_from_feed_url(x) for x in urls]
 
         return qiita_feed_ids
@@ -172,13 +216,15 @@ class Qiidly:
         return subscriptions
 
     def sync(self):
-        """dummy."""
+        """
+        QiitaでのフォローをFeedlyにSyncします.
+        """
         if not self.todo_checked:
             self._check_todo()
         for f in self.todo['subscribe_ids']:
             self.feedly_client.subscribe_feed(f, self.qiidly_category_id)
-        if len(self.todo['unsubscribe_ids']) > 0:
+        if self.todo['unsubscribe_ids']:
             self.feedly_client.unsubscribe_feeds(self.todo['unsubscribe_ids'])
         to_update = self.todo['add_categories'] + self.todo['remove_categories']
-        if len(to_update) > 0:
+        if to_update:
             self.feedly_client.update_feeds(to_update)

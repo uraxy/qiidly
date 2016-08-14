@@ -26,7 +26,7 @@ def _query_yes_no(question, default=None):
     elif default == 'no':
         prompt = ' [y/N] '
     else:
-        raise ValueError("invalid default answer: '{default}'".format(default=default))
+        raise ValueError("Invalid default answer: '{default}'".format(default=default))
 
     while True:
         print(question + prompt, end='')
@@ -42,19 +42,24 @@ def _query_yes_no(question, default=None):
 def main():
     """dummy."""
     args = _arg_parser().parse_args()
-    q = Qiidly(args.qiita_token, args.feedly_token)
 
-    if q.up_to_date():
-        print('Already up-to-date.')
-        exit(0)
-    q.print_todo()
-    # sync to Feedly
-    print('')
-    if not _query_yes_no('Sync following tag feeds at Qiita to Feedly?', default=None):
-        print('Did nothing.')
-        exit(0)
-    q.sync()
-    print('Done!')
+    for target in ['tags', 'followees']:
+        q = Qiidly(args.qiita_token, args.feedly_token, target=target)
+
+        have_to_sync = q.have_to_sync()
+        q.print_todo()
+        if not have_to_sync:
+            print('Already up-to-date.')
+            print()
+            continue
+
+        # sync to Feedly
+        print('')
+        if not _query_yes_no('Sync to Feedly?', default=None):
+            print('Did nothing.')
+            continue
+        q.sync()
+        print('Done!')
 
 
 if __name__ == '__main__':
