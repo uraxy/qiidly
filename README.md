@@ -1,14 +1,14 @@
 qiidly
-==================================================
+======
 
 Sync Qiita feeds of followees and following tags to Feedly.
 
 
 Setup
-==================================================
+=====
 
 Libraries
-----------------------------------------
+---------
 ```sh
 $ pip install -r requirements.txt
 ```
@@ -17,7 +17,7 @@ $ pip install -r requirements.txt
 
 
 API Access token
-----------------------------------------
+----------------
 
 Qiita access token
 - https://qiita.com/settings/applications
@@ -28,7 +28,7 @@ Feedly developer access token
 
 
 Usage
-==================================================
+=====
 
 ```bash
 $ python -m qiidly.command_line -h
@@ -64,8 +64,8 @@ $
 ```
 
 
-tests
-==================================================
+Tests
+=====
 
 ```bash
 $ python -m unittest discover tests
@@ -73,5 +73,5 @@ $ python -m unittest discover tests
 
 
 License
-==================================================
-MIT
+=======
+MIT License
