@@ -1,31 +1,7 @@
 qiidly
 ======
 
-FeedlyのAndroidアプリは快適！
-blogを読むだけじゃもったいない、
-Qiitaの新着記事もチェックするともっと快適！
-
-そのためには…
-- Qiitaでフォロー中のタグ
-- Qiitaでフォロー中のユーザー
-をカンタンにFeedlyに同期できなきゃ。
-
-そのためのツールがqiidlyなのだ。
-
------
-
-qiidlyは、
-Qiitaでフォロー中のタグとユーザーのフィードをFeedlyに同期するツールです。
-
-Qiitaでフォロー中のものは、Feedlyに次のカテゴリで登録されます。
-- フォロー中のタグ -> Qiita:tags
-- フォロー中のユーザー -> Qiita:followees
-
-Qiitaでフォローを解除したものは、Feedlyから削除されます。
-
-フィードが既に他のカテゴリで登録されている場合、
-そのカテゴリでの登録は維持されます。
-つまり、qiidlyで同期したことで、フィードの登録がなくなったり、カテゴリが消えちゃったりすることはありません。
+Sync Qiita feeds for followees and following tags to Feedly.
 
 
 Setup
