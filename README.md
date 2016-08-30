@@ -1,6 +1,8 @@
 qiidly
 ======
 
+[![Build Status](https://travis-ci.org/uraxy/qiidly.svg?branch=master)](https://travis-ci.org/uraxy/qiidly)
+
 FeedlyのAndroidアプリは快適！
 blogを読むだけじゃもったいない、
 Qiitaの新着記事もチェックするともっと快適！
