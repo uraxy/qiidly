@@ -98,53 +98,27 @@ with unittest
 $ python -m unittest discover tests
 ```
 
-with [nose2](http://nose2.readthedocs.io/en/latest/index.html)
---------------------------------------------------------------
-
-- [Docs » Plugins for nose2 » Test coverage reporting](http://nose2.readthedocs.io/en/latest/plugins/coverage.html)
+with nose
+---------
 
 ```bash
-$ pip install nose2
-$ pip install cov-core
-$ nose2 --with-coverage
+$ nosetests --with-coverage --cover-html --cover-package=qiidly
 ..........
+Name               Stmts   Miss  Cover
+--------------------------------------
+qiidly.py              0      0   100%
+qiidly/feedly.py      35     14    60%
+qiidly/main.py       108     84    22%
+qiidly/qiita.py       45     25    44%
+--------------------------------------
+TOTAL                188    123    35%
 ----------------------------------------------------------------------
-Ran 10 tests in 0.004s
+Ran 10 tests in 0.190s
 
 OK
------------ coverage: platform linux, python 3.5.1-final-0 -----------
-Name                     Stmts   Miss  Cover
---------------------------------------------
-qiidly/__init__.py           0      0   100%
-qiidly/command_line.py      43     43     0%
-qiidly/feedly.py            35     14    60%
-qiidly/main.py             108     84    22%
-qiidly/qiita.py             45     25    44%
-setup.py                     2      2     0%
-tests/test_feedly.py        32      0   100%
-tests/test_main.py          21      0   100%
-tests/test_qiita.py         31      0   100%
---------------------------------------------
-TOTAL                      317    168    47%
-$ nose2 --with-coverage --coverage-report html
-..........
-----------------------------------------------------------------------
-Ran 10 tests in 0.004s
-
-OK
------------ coverage: platform linux, python 3.5.1-final-0 -----------
-Coverage HTML written to dir htmlcov
-y$ nose2 --with-coverage --coverage-report annotate
-..........
-----------------------------------------------------------------------
-Ran 10 tests in 0.004s
-
-OK
------------ coverage: platform linux, python 3.5.1-final-0 -----------
-Coverage annotated source written next to source
+$ google-chrome cover/index.html
 $
 ```
-
 
 
 License
