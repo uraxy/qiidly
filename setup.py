@@ -1,9 +1,10 @@
 from setuptools import setup, find_packages
+from qiidly import __version__, __description__
 
 # https://setuptools.readthedocs.io/en/latest/setuptools.html#basic-use
 setup(
     name='qiidly',
-    version='1.0.0',
+    version=__version__,
     packages=find_packages(),
     # scripts = ['say_hello.py'],
     install_requires=[
@@ -13,7 +14,7 @@ setup(
     # metadata for upload to PyPI
     author='uraxy',
     author_email='uraxy123@gmail.com',
-    description='Sync Qiita feeds for followees and following tags to Feedly. -> Qiitaでフォロー中のタグとユーザーをFeedlyに同期。',
+    description=__description__,
     license='MIT',
     keywords=['Qiita', 'Feedly', 'feed', 'rss', 'atom'],
     url='https://github.com/uraxy/qiidly',
@@ -25,9 +26,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
-        'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
         'Topic :: Utilities',
     ],
 )

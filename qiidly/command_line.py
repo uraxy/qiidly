@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 """dummy docstring."""
 import argparse
+from qiidly import __version__, __description__
 from qiidly.main import Qiidly
 
 
 def _arg_parser():
-    parser = argparse.ArgumentParser(description='qiidly: Sync following tag feeds at Qiita to Feedly.')
+    parser = argparse.ArgumentParser(
+        prog='qiidly',
+        description=__description__)
+    parser.add_argument('--version',
+                        action='version',
+                        version='%(prog)s version {}'.format(__version__))
     parser.add_argument('-q', '--qiita-token',
                         required=True,
                         help='Qiita access token')
