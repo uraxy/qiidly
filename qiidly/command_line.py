@@ -9,7 +9,7 @@ def _arg_parser():
     parser = argparse.ArgumentParser(
         prog='qiidly',
         description=__description__)
-    parser.add_argument('--version',
+    parser.add_argument('-V', '--version',
                         action='version',
                         version='%(prog)s version {}'.format(__version__))
     parser.add_argument('-q', '--qiita-token',
