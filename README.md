@@ -1,6 +1,7 @@
 qiidly
 ======
 
+[![PyPI version](https://badge.fury.io/py/qiidly.svg)](https://badge.fury.io/py/qiidly)
 [![Build Status](https://travis-ci.org/uraxy/qiidly.svg?branch=master)](https://travis-ci.org/uraxy/qiidly)
 [![Code Health](https://landscape.io/github/uraxy/qiidly/master/landscape.svg?style=flat)](https://landscape.io/github/uraxy/qiidly/master)
 [![Coverage Status](https://coveralls.io/repos/github/uraxy/qiidly/badge.svg?branch=master)](https://coveralls.io/github/uraxy/qiidly?branch=master)
